@@ -16,9 +16,3 @@ USER $NB_UID
 ENV JUPYTER_ENABLE_LAB=yes
 
 RUN conda install -c jetbrains kotlin-jupyter-kernel
-
-ENV PATH=$HOME/bin:$PATH
-
-RUN npm config set prefix $HOME \
-  && npm install -g ijavascript \
-  && ijsinstall
