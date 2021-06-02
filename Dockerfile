@@ -1,0 +1,24 @@
+FROM jupyter/datascience-notebook:notebook-6.4.0
+
+# Add a "USER root" statement followed by RUN statements to install system packages using apt-get,
+# change file permissions, etc.
+USER root
+
+# Kotlin Jupyter requires Java 8 to be installed.
+# See https://github.com/cheptsov/kotlin-jupyter-demo/blob/master/index.ipynb
+RUN apt-get update \
+  && apt-get install -yq --no-install-recommends openjdk-8-jre nodejs npm jupyter-notebook
+
+# If you do switch to root, always be sure to add a "USER $NB_USER" command at the end of the
+# file to ensure the image runs as a unprivileged user by default.
+USER $NB_UID
+
+ENV JUPYTER_ENABLE_LAB=yes
+
+RUN conda install -c jetbrains kotlin-jupyter-kernel
+
+ENV PATH=$HOME/bin:$PATH
+
+RUN npm config set prefix $HOME \
+  && npm install -g ijavascript \
+  && ijsinstall
